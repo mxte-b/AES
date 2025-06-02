@@ -1,4 +1,5 @@
-﻿using AES.Utility.Enums;
+﻿using AES.Components;
+using AES.Utility.Enums;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace AES.Utility
         private static readonly object _instanceLock = new object();
 
         public SBox SBox { get; private set; }
-        public byte[] RoundConstants { get; private set; }
+        public Word[] RoundConstants { get; private set; }
 
         private ResourceDatabase()
         {
@@ -35,7 +36,7 @@ namespace AES.Utility
             SBox = new SBox(sboxData);
 
             // Round constants
-            RoundConstants = [0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1B, 0x36];
+            RoundConstants = Primitives.GenerateRoundConstants();
         }
 
         public static ResourceDatabase Instance

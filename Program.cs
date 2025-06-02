@@ -1,4 +1,5 @@
-﻿using AES.Utility.Enums;
+﻿using AES.Utility;
+using AES.Utility.Enums;
 using QRay.Utility;
 
 namespace AES
@@ -9,7 +10,9 @@ namespace AES
         {
             string payload = "Haho";
             string key = "AlmafaAlmafaAlma"; // MUST BE 16/24/32 characters
-            string cipherText = AES.Encode(payload, key, CipherMode.ECB, KeySize.Bits128);
+
+            AES encoder = new AES(CipherMode.CBC, KeySize.Bits128);
+            string cipherText = encoder.Encode(payload, key);
         }
     }
 }

@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AES", "AES.csproj", "{834A788A-DC18-448C-AC6A-C34BF623A7BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AESTests", "..\AESTests\AESTests.csproj", "{D9EC5AF6-24DE-4BE8-8488-C4437D70B490}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{834A788A-DC18-448C-AC6A-C34BF623A7BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{834A788A-DC18-448C-AC6A-C34BF623A7BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{834A788A-DC18-448C-AC6A-C34BF623A7BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9EC5AF6-24DE-4BE8-8488-C4437D70B490}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9EC5AF6-24DE-4BE8-8488-C4437D70B490}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9EC5AF6-24DE-4BE8-8488-C4437D70B490}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9EC5AF6-24DE-4BE8-8488-C4437D70B490}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

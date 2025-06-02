@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AES.Components;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,9 +16,9 @@ namespace AES.Utility
             return buffer[(value & 0xf0) >> 4, value & 0x0f];
         }
 
-        public byte[] Substitute(byte[] word)
+        public Word Substitute(Word word)
         {
-            return word.Select(x => Lookup(x)).ToArray();
+            return new Word(word.GetBuffer().Select(Lookup).ToArray());
         }
 
         public SBox(byte[,] data)
