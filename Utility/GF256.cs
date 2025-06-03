@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AES.Components;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -38,6 +39,26 @@ namespace AES.Utility
                     }
                     result ^= multiple;
                 }
+            }
+
+            return result;
+        }
+
+        // Matrix multiplication by a vector in GF(2^8)
+        public static Word MultiplyMatrix(byte[,] matrix, Word word)
+        {
+            Word result = new Word();
+
+            for (int i = 0; i < word.Length; i++)
+            {
+                byte sum = 0x00;
+
+                for (int j = 0; j < word.Length; j++)
+                {
+                    sum ^= Multiply(matrix[i, j], word[j]);
+                }
+
+                result[i] = sum;
             }
 
             return result;

@@ -11,6 +11,8 @@ namespace AES.Utility
     public static class Primitives
     {
         private static ResourceDatabase database = ResourceDatabase.Instance;
+
+        // --- Word Primitives ---
         public static Word RotWord(Word word)
         {
             return new Word(word[1], word[2], word[3], word[0]);
@@ -39,5 +41,54 @@ namespace AES.Utility
 
             return rcon;
         }
+        // --- END Word Primitives ---
+
+        // --- State Primitives ---
+        public static void AddRoundKey(State state, Word[] roundKey)
+        {
+            if (roundKey.Length != 4)
+            {
+                throw new ArgumentException("The round key must be exactly 4 words long");
+            }
+
+            for (int i = 0; i < 4; i++)
+            {
+                state.SetColumn(i, state.GetColumn(i) ^ roundKey[i]);
+            }
+        }
+
+        public static void SubBytes(State state)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                Word sub = database.SBox.Substitute(state.GetColumn(i));
+                state.SetColumn(i, sub);
+            }
+        }
+
+        public static void ShiftRows(State state)
+        {
+            byte[,] temp = state.GetBuffer();
+
+            for (int row = 0; row < 4; row++)
+            {
+                int shift = row;
+                for (int col = 0; col < 4; col++)
+                {
+                    state[row, col] = temp[row, (col + shift) % 4];
+                }
+            }
+        }
+
+        public static void MixColumns(State state)
+        {
+            byte[,] buffer = state.GetBuffer();
+
+            for (int col = 0; col < 4; col++)
+            {
+                state.SetColumn(col, GF256.MultiplyMatrix(database.MixColumnMatrix, state.GetColumn(col)));
+            }
+        }
+        // --- END State Primitives ---
     }
 }

@@ -30,6 +30,14 @@ namespace AES.Components
         public byte[] GetBuffer() => (byte[])buffer.Clone();
         public byte[] ToArray() => (byte[])buffer.Clone();
 
+        public int Length
+        {
+            get
+            {
+                return buffer.Length;
+            }
+        }
+
         public Word(byte b0, byte b1, byte b2, byte b3)
         {
             buffer = [b0, b1, b2, b3];
@@ -42,6 +50,11 @@ namespace AES.Components
                 throw new ArgumentException("Word buffer must exactly be 4 bytes");
             }
             Array.Copy(buffer, this.buffer, 4);
+        }
+
+        public Word()
+        {
+            buffer = new byte[4];
         }
 
         public override string ToString()

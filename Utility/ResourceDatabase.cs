@@ -16,11 +16,12 @@ namespace AES.Utility
 
         public SBox SBox { get; private set; }
         public Word[] RoundConstants { get; private set; }
+        public byte[,] MixColumnMatrix { get; private set; }
 
         private ResourceDatabase()
         {
             // Substitution box
-            byte[,] sboxData = new byte[16,16];
+            byte[,] sboxData = new byte[16, 16];
             int y = 0;
             foreach (string line in ResourceLoader.LoadEmbedded("AES.Resources.SBox.csv"))
             {
@@ -37,6 +38,15 @@ namespace AES.Utility
 
             // Round constants
             RoundConstants = Primitives.GenerateRoundConstants();
+
+            // MixColumns Matrix ( a(x) )
+            MixColumnMatrix = new byte[4, 4]
+            {
+                { 0x02, 0x03, 0x01, 0x01 },
+                { 0x01, 0x02, 0x03, 0x01 },
+                { 0x01, 0x01, 0x02, 0x03 },
+                { 0x03, 0x01, 0x01, 0x02 }
+            };
         }
 
         public static ResourceDatabase Instance
