@@ -59,7 +59,7 @@ namespace AES.Components
 
         public override string ToString()
         {
-            return $"[{String.Join(",", buffer.Select(x => x.ToString("X2")))}]";
+            return $"[{String.Join(", ", buffer.Select(x => x.ToString("X2")))}]";
         }
 
         public bool Equals(Word? other)
@@ -67,6 +67,10 @@ namespace AES.Components
             if (other == null)
             {
                 return false;
+            }
+            if (ReferenceEquals(this, other))
+            {
+                return true;
             }
 
             return buffer.SequenceEqual(other.buffer);

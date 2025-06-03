@@ -10,7 +10,7 @@ namespace AES.Utility
 {
     public static class GF256
     {
-        public static byte xtime(byte polynomial)
+        public static byte XTime(byte polynomial)
         {
             byte shifted = (byte)(polynomial << 1);
             bool mostSignificantBitSet = (polynomial & 0x80) != 0;
@@ -35,7 +35,7 @@ namespace AES.Utility
                     byte multiple = left;
                     for (int j = 0; j < i; j++)
                     {
-                        multiple = xtime(multiple);
+                        multiple = XTime(multiple);
                     }
                     result ^= multiple;
                 }

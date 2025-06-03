@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AES.Components
 {
-    public class State
+    public class State : IEquatable<State>
     {
         // Nb is defined here too, just for clarity.
         // It is also present in the KeyConstants class.
@@ -45,6 +45,16 @@ namespace AES.Components
             }
         }
 
+        /// <summary>
+        /// Gets the row as a Word at a specified index.
+        /// </summary>
+        /// <param name="row">The index of the row</param>
+        /// <returns>The bytes of the row as a Word instance.</returns>
+        public Word GetRow(int row)
+        {
+            return new Word(buffer[row, 0], buffer[row, 1], buffer[row, 2], buffer[row, 3]);
+        }
+
         public int GetLength(int dimension) => buffer.GetLength(dimension);
 
         public byte[,] GetBuffer() => (byte[,])buffer.Clone();
@@ -68,15 +78,51 @@ namespace AES.Components
 
             byte[,] buffer = new byte[4, Nb];
 
-            for (int row = 0; row < 4; row++)
+            for (int col = 0; col < 4; col++)
             {
-                for (int col = 0; col < Nb; col++)
+                for (int row = 0; row < Nb; row++)
                 {
-                    buffer[row, col] = bytes[row * 4 + col];
+                    buffer[col, row] = bytes[row * 4 + col];
                 }
             }
 
             this.buffer = buffer;
+        }
+
+        public bool Equals(State? other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            for (int row = 0; row < 4; row++)
+            {
+                if (!GetRow(row).Equals(other.GetRow(row)))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        public override bool Equals(object? obj) => Equals(obj as State);
+
+        public override int GetHashCode() => Enumerable.Range(0, 4).Select(i => GetRow(i).GetHashCode()).Aggregate((h1, h2) => HashCode.Combine(h1, h2));
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            
+            for (int row = 0; row < 4; row++)
+            {
+                sb.AppendLine(GetRow(row).ToString());
+            }
+
+            return sb.ToString();
         }
     }
 }

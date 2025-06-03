@@ -36,7 +36,7 @@ namespace AES.Utility
             for (int i = 1; i < 10 + 1; i++)
             {
                 rcon[i - 1] = new Word(current, 0, 0, 0);
-                current = GF256.xtime(current);
+                current = GF256.XTime(current);
             }
 
             return rcon;
