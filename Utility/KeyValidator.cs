@@ -1,11 +1,11 @@
-﻿using AES.Utility.Enums;
+﻿using Crypto.Utility.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AES.Utility
+namespace Crypto.Utility
 {
     public class KeyValidator
     {

@@ -5,7 +5,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AES.Components
+namespace Crypto.Components
 {
     public class Word : IEquatable<Word>
     {

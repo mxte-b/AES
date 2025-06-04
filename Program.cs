@@ -1,8 +1,8 @@
-﻿using AES.Utility;
-using AES.Utility.Enums;
+﻿using Crypto.Utility;
+using Crypto.Utility.Enums;
 using QRay.Utility;
 
-namespace AES
+namespace Crypto
 {
     internal class Program
     {

@@ -1,4 +1,4 @@
-﻿using AES.Utility.Enums;
+﻿using Crypto.Utility.Enums;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace AES.Components
+namespace Crypto.Components
 {
     public class KeyConstants
     {

@@ -1,11 +1,11 @@
-﻿using AES.Utility;
+﻿using Crypto.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AES.Components
+namespace Crypto.Components
 {
     public class State : IEquatable<State>
     {
@@ -14,7 +14,7 @@ namespace AES.Components
         // For AES, the number of blocks in the state is always 4.
         private const int Nb = 4;
 
-        private readonly byte[,] buffer = new byte[4, Nb];
+        private readonly byte[,] buffer = new byte[Nb, 4];
 
         public byte this[int row, int col]
         {
@@ -59,11 +59,26 @@ namespace AES.Components
 
         public byte[,] GetBuffer() => (byte[,])buffer.Clone();
 
+        public byte[] ToArray()
+        {
+            byte[] bytes = new byte[4 * Nb];
+
+            for (int col = 0; col < 4; col++) 
+            {
+                for (int row = 0; row < Nb; row++)
+                {
+                    bytes[row * 4 + col] = buffer[row, col];
+                }
+            }
+
+            return bytes;
+        }
+
         public State(byte[,] buffer)
         {
-            if (buffer.GetLength(0) != 4 || buffer.GetLength(1) != Nb)
+            if (buffer.GetLength(0) != Nb || buffer.GetLength(1) != 4)
             {
-                throw new ArgumentException($"The dimensions of the buffer must be 4x{Nb}");
+                throw new ArgumentException($"The dimensions of the buffer must be {Nb}x4");
             }
 
             this.buffer = (byte[,])buffer.Clone();
@@ -76,13 +91,13 @@ namespace AES.Components
                 throw new ArgumentException("The number of bytes must equal 16");
             }
 
-            byte[,] buffer = new byte[4, Nb];
+            byte[,] buffer = new byte[Nb, 4];
 
-            for (int col = 0; col < 4; col++)
+            for (int col = 0; col < Nb; col++)
             {
-                for (int row = 0; row < Nb; row++)
+                for (int row = 0; row < 4; row++)
                 {
-                    buffer[col, row] = bytes[row * 4 + col];
+                    buffer[row, col] = bytes[col * 4 + row];
                 }
             }
 

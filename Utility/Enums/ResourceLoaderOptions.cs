@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AES.Utility.Enums
+namespace Crypto.Utility.Enums
 {
     internal enum ResourceLoaderOptions
     {

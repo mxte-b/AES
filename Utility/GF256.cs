@@ -1,4 +1,4 @@
-﻿using AES.Components;
+﻿using Crypto.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AES.Utility
+namespace Crypto.Utility
 {
     public static class GF256
     {

@@ -1,11 +1,11 @@
-﻿using AES.Utility;
+﻿using Crypto.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AES.Components
+namespace Crypto.Components
 {
     public static class KeyExpander
     {

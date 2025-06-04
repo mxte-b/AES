@@ -1,11 +1,11 @@
-﻿using AES.Utility;
+﻿using Crypto.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AES.Components
+namespace Crypto.Components
 {
     public static class Cipher
     {
@@ -16,11 +16,11 @@ namespace AES.Components
             // Figure 5.
             Primitives.AddRoundKey(state, subKeys[0..constants.Nb]);
 
-            for (int round = 1; round < constants.Nr; round++)
+            for (int round = 1; round < constants.Nr + 1; round++)
             {
                 Primitives.SubBytes(state);
                 Primitives.ShiftRows(state);
-                if (round != constants.Nr - 1)
+                if (round != constants.Nr)
                 {
                     Primitives.MixColumns(state);
                 }

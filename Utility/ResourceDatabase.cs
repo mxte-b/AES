@@ -1,5 +1,5 @@
-﻿using AES.Components;
-using AES.Utility.Enums;
+﻿using Crypto.Components;
+using Crypto.Utility.Enums;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AES.Utility
+namespace Crypto.Utility
 {
     public class ResourceDatabase
     {

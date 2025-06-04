@@ -1,15 +1,15 @@
-﻿using AES.Components;
-using AES.Utility;
-using AES.Utility.Enums;
+﻿using Crypto.Components;
+using Crypto.Utility;
+using Crypto.Utility.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using CipherMode = AES.Utility.Enums.CipherMode;
+using CipherMode = Crypto.Utility.Enums.CipherMode;
 
-namespace AES
+namespace Crypto
 {
     public class AES
     {
@@ -33,7 +33,6 @@ namespace AES
             Console.WriteLine(String.Join("\n\n", states));
 
             // Key Schedule
-            // AES generates 128 bit keys for all versions
             Word[] subKeys = KeyExpander.Schedule(keyBytes, Constants);
 
             // Main encoding loop
