@@ -1,6 +1,7 @@
 ﻿using Crypto.Utility;
 using Crypto.Utility.Enums;
 using QRay.Utility;
+using System.Text;
 
 namespace Crypto
 {
@@ -8,11 +9,13 @@ namespace Crypto
     {
         static void Main(string[] args)
         {
-            string payload = "Haho";
-            string key = "AlmafaAlmafaAlma"; // MUST BE 16/24/32 characters
+            string plain = "Almafácskaasdasdasdasdadasdasd";
+            string key = "AlmafafinomalmaaAlmafafinomalmaa"; // MUST BE 16/24/32 characters
+            string iv = "Almafafinomalmaa";
 
-            AES encoder = new AES(CipherMode.CBC, KeySize.Bits128);
-            string cipherText = encoder.Encode(payload, key);
+            AES encoder = new AES(CipherMode.CBC, KeySize.Bits256);
+            string cipherText = encoder.Encrypt(plain, key, iv);
+            Console.WriteLine(cipherText);
         }
     }
 }

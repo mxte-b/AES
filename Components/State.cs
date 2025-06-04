@@ -67,7 +67,7 @@ namespace Crypto.Components
             {
                 for (int row = 0; row < Nb; row++)
                 {
-                    bytes[row * 4 + col] = buffer[row, col];
+                    bytes[col * 4 + row] = buffer[row, col];
                 }
             }
 
@@ -82,6 +82,11 @@ namespace Crypto.Components
             }
 
             this.buffer = (byte[,])buffer.Clone();
+        }
+
+        public State()
+        {
+            buffer = new byte[Nb, 4];
         }
 
         public State(byte[] bytes)
@@ -103,6 +108,8 @@ namespace Crypto.Components
 
             this.buffer = buffer;
         }
+
+        public State Clone() => new State((byte[,])buffer.Clone());
 
         public bool Equals(State? other)
         {

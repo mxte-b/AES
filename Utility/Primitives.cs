@@ -3,6 +3,7 @@ using Crypto.Utility.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -44,6 +45,15 @@ namespace Crypto.Utility
         // --- END Word Primitives ---
 
         // --- State Primitives ---
+
+        public static State RandomIV()
+        {
+            byte[] buffer = new byte[16];
+            using var r = RandomNumberGenerator.Create();
+            r.GetBytes(buffer);
+            return new State(buffer);
+        }
+
         public static void AddRoundKey(State state, Word[] roundKey)
         {
             if (roundKey.Length != 4)
@@ -54,6 +64,17 @@ namespace Crypto.Utility
             for (int i = 0; i < 4; i++)
             {
                 state.SetColumn(i, state.GetColumn(i) ^ roundKey[i]);
+            }
+        }
+
+        /// <summary>
+        /// Performs byte-wise XOR operation on "a", using the bytes from "b"
+        /// </summary>
+        public static void XOR(State a, State b)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                a.SetColumn(i, a.GetColumn(i) ^ b.GetColumn(i));
             }
         }
 

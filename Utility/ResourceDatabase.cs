@@ -23,7 +23,7 @@ namespace Crypto.Utility
             // Substitution box
             byte[,] sboxData = new byte[16, 16];
             int y = 0;
-            foreach (string line in ResourceLoader.LoadEmbedded("AES.Resources.SBox.csv"))
+            foreach (string line in ResourceLoader.LoadEmbedded("Crypto.Resources.SBox.csv"))
             {
                 string[] values = line.Split(',');
 

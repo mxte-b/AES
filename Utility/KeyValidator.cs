@@ -9,10 +9,23 @@ namespace Crypto.Utility
 {
     public class KeyValidator
     {
-        public static bool IsValid(string key, KeySize size)
+        public static bool IsValid(string key, KeySize size, StringEncoding encoding)
         {
-            UTF8Encoding encoding = new UTF8Encoding();
-            return encoding.GetByteCount(key) * 8 == (int)size;
+            try
+            {
+                byte[] keyBytes = encoding switch
+                {
+                    StringEncoding.UTF8 => Encoding.UTF8.GetBytes(key),
+                    StringEncoding.Base64 => Convert.FromBase64String(key),
+                    _ => throw new ArgumentException("Invalid encoding encountered")
+                };
+
+                return keyBytes?.Length * 8 == (int)size;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
