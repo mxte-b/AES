@@ -9,10 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\InvSBox.csv" />
     <None Remove="Resources\SBox.csv" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\InvSBox.csv" />
     <EmbeddedResource Include="Resources\SBox.csv" />
   </ItemGroup>
 

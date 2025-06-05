@@ -25,7 +25,7 @@ namespace Crypto.Components
             // Key Schedule
             Word[] subKeys = KeyExpander.Schedule(key, keyConstants);
 
-            // Main encoding loop
+            // Main encrypting loop
             switch (cipherMode)
             {
                 case CipherMode.ECB:
@@ -38,7 +38,12 @@ namespace Crypto.Components
                     break;
                 case CipherMode.CBC:
 
-                    State chainValue = iv == null ? Primitives.RandomIV() : new State(iv);
+                    if (iv == null)
+                    {
+                        throw new CryptographicException("Null value encountered in IV");
+                    }
+
+                    State chainValue = new State(iv);
 
                     foreach (State state in states)
                     {
@@ -52,6 +57,49 @@ namespace Crypto.Components
             }
 
             return GetBytesFromStates(states);
+        }
+
+        public byte[] Decrypt(byte[] ciphertext, byte[] key, byte[]? iv = null)
+        {
+            List<State> states = GetStates(ciphertext);
+
+            // Key Schedules
+            Word[] subKeys = KeyExpander.Schedule(key, keyConstants);
+
+            // Main encrypting loop
+            switch (cipherMode)
+            {
+                case CipherMode.ECB:
+
+                    foreach (State state in states)
+                    {
+                        Cipher.ApplyInverse(state, subKeys, keyConstants);
+                    }
+
+                    break;
+                case CipherMode.CBC:
+
+                    if (iv == null)
+                    {
+                        throw new CryptographicException("Null value encountered in IV");
+                    }
+
+                    State chainValue = new State(iv);
+
+                    foreach (State state in states)
+                    {
+                        State clone = state.Clone();
+                        Cipher.ApplyInverseCBC(state, subKeys, chainValue, keyConstants);
+                        chainValue = clone;
+                    }
+
+                    break;
+                default:
+                    throw new CryptographicException("Unknown cipher mode encountered");
+            }
+
+            byte[] plaintext = GetBytesFromStates(states);
+            return RemovePadding(plaintext);
         }
 
         // Applies PKCS#7 padding to the data
@@ -101,7 +149,7 @@ namespace Crypto.Components
         {
             if (data.Length % 16 != 0)
             {
-                throw new ArgumentException("The length of the plaintext must be a multiple of 16");
+                throw new ArgumentException("The length of the data must be a multiple of 16");
             }
 
             List<State> states = new List<State>();

@@ -14,9 +14,11 @@ namespace Crypto.Utility
         private static ResourceDatabase? _instance = null;
         private static readonly object _instanceLock = new object();
 
-        public SBox SBox { get; private set; }
-        public Word[] RoundConstants { get; private set; }
-        public byte[,] MixColumnMatrix { get; private set; }
+        public SBox SBox { get; }
+        public SBox InvSBox { get; }
+        public Word[] RoundConstants { get; }
+        public byte[,] MixColumnsMatrix { get; }
+        public byte[,] InvMixColumnsMatrix { get; }
 
         private ResourceDatabase()
         {
@@ -36,16 +38,42 @@ namespace Crypto.Utility
             }
             SBox = new SBox(sboxData);
 
+            // Inverse Substitution box
+            byte[,] invSBoxData = new byte[16, 16];
+            y = 0;
+            foreach (string line in ResourceLoader.LoadEmbedded("Crypto.Resources.InvSBox.csv"))
+            {
+                string[] values = line.Split(',');
+
+                for (int x = 0; x < 16; x++)
+                {
+                    invSBoxData[y, x] = Convert.ToByte(values[x]);
+                }
+
+                y++;
+            }
+
+            InvSBox = new SBox(invSBoxData);
+
             // Round constants
             RoundConstants = Primitives.GenerateRoundConstants();
 
             // MixColumns Matrix ( a(x) )
-            MixColumnMatrix = new byte[4, 4]
+            MixColumnsMatrix = new byte[4, 4]
             {
                 { 0x02, 0x03, 0x01, 0x01 },
                 { 0x01, 0x02, 0x03, 0x01 },
                 { 0x01, 0x01, 0x02, 0x03 },
                 { 0x03, 0x01, 0x01, 0x02 }
+            };
+
+            // InvMixColumns Matrix ( a(x) )
+            InvMixColumnsMatrix = new byte[4, 4]
+            {
+                { 0x0e, 0x0b, 0x0d, 0x09 },
+                { 0x09, 0x0e, 0x0b, 0x0d },
+                { 0x0d, 0x09, 0x0e, 0x0b },
+                { 0x0b, 0x0d, 0x09, 0x0e }
             };
         }
 

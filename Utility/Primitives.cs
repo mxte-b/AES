@@ -13,6 +13,14 @@ namespace Crypto.Utility
     {
         private static ResourceDatabase database = ResourceDatabase.Instance;
 
+        public static byte[] RandomIVBytes()
+        {
+            byte[] buffer = new byte[16];
+            using var r = RandomNumberGenerator.Create();
+            r.GetBytes(buffer);
+            return buffer;
+        }
+
         // --- Word Primitives ---
         public static Word RotWord(Word word)
         {
@@ -48,10 +56,7 @@ namespace Crypto.Utility
 
         public static State RandomIV()
         {
-            byte[] buffer = new byte[16];
-            using var r = RandomNumberGenerator.Create();
-            r.GetBytes(buffer);
-            return new State(buffer);
+            return new State(RandomIVBytes());
         }
 
         public static void AddRoundKey(State state, Word[] roundKey)
@@ -103,11 +108,40 @@ namespace Crypto.Utility
 
         public static void MixColumns(State state)
         {
-            byte[,] buffer = state.GetBuffer();
-
             for (int col = 0; col < 4; col++)
             {
-                state.SetColumn(col, GF256.MultiplyMatrix(database.MixColumnMatrix, state.GetColumn(col)));
+                state.SetColumn(col, GF256.MultiplyMatrix(database.MixColumnsMatrix, state.GetColumn(col)));
+            }
+        }
+
+        public static void InvSubBytes(State state)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                Word sub = database.InvSBox.Substitute(state.GetColumn(i));
+                state.SetColumn(i, sub);
+            }
+        }
+
+        public static void InvShiftRows(State state)
+        {
+            byte[,] temp = state.GetBuffer();
+
+            for (int row = 0; row < 4; row++)
+            {
+                int shift = 4 - row;
+                for (int col = 0; col < 4; col++)
+                {
+                    state[row, col] = temp[row, (col + shift) % 4];
+                }
+            }
+        }
+
+        public static void InvMixColumns(State state)
+        {
+            for (int col = 0; col < 4; col++)
+            {
+                state.SetColumn(col, GF256.MultiplyMatrix(database.InvMixColumnsMatrix, state.GetColumn(col)));
             }
         }
         // --- END State Primitives ---
